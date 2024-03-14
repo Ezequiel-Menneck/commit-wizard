@@ -55,7 +55,7 @@ const getCommit = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{
 const createBlob = await octokit.request('POST /repos/{owner}/{repo}/git/blobs', {
   owner: owner,
   repo: repo,
-  content: 'Test blob',
+  content: 'Commit Blob',
   encoding: 'utf-8',
   headers: {
     'X-GitHub-Api-Version': '2022-11-28'
@@ -68,7 +68,7 @@ const createTree = await octokit.request('POST /repos/{owner}/{repo}/git/trees',
   base_tree: getCommit.data.sha,
   tree: [
     {
-      path: 'tree.md',
+      path: 'commits.md',
       mode: '100644',
       type: 'blob',
       sha: createBlob.data.sha
@@ -85,14 +85,10 @@ const createCommit = await octokit.request('POST /repos/{owner}/{repo}/git/commi
   owner: owner,
   repo: repo,
   message: 'Automated Commit',
-  author: {
-    name: 'menneck',
-    email: 'zeeeee.peeeeetryyy@gmail.com',
-    date: today
-  },
-  // parents: [
-  //   '7d1b31e74ee336d15cbd21741bc88a537ed063a0'
-  // ],
+  author: author,
+  parents: [
+    getCommit.data.sha
+  ],
   tree: createTree.data.sha,
   headers: {
     'X-GitHub-Api-Version': '2022-11-28'
@@ -116,10 +112,6 @@ const updateRef = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{r
 
 console.log(getRef);
 console.log('----------------------------------------------');
-console.log('RESULT');
-console.log(dataFromRef);
-console.log('RESULT');
-console.log('----------------------------------------------');
 console.log(getCommit);
 console.log('----------------------------------------------');
 console.log(createBlob);
@@ -128,4 +120,4 @@ console.log(createTree);
 console.log('----------------------------------------------');
 console.log(createCommit);
 console.log('----------------------------------------------');
-// console.log(updateRef)
+console.log(updateRef)
