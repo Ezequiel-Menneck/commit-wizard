@@ -79,16 +79,16 @@ const createCommit = await octokit.request('POST /repos/{owner}/{repo}/git/commi
   }
 })
 
-const updateRef = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
-  owner: owner,
-  repo: repo,
-  ref: 'heads/master',
-  sha: createCommit.data.sha,
-  force: true,
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28'
-  }
-})
+// const updateRef = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
+//   owner: owner,
+//   repo: repo,
+//   ref: 'heads/master',
+//   sha: createCommit.data.sha,
+//   force: true,
+//   headers: {
+//     'X-GitHub-Api-Version': '2022-11-28'
+//   }
+// })
 
 
 
@@ -104,4 +104,4 @@ console.log(createTree);
 console.log('----------------------------------------------');
 console.log(createCommit);
 console.log('----------------------------------------------');
-console.log(updateRef)
+// console.log(updateRef)
