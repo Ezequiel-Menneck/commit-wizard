@@ -23,6 +23,26 @@ const getRef = await octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', 
   }
 })
 
+let dataFromRef;
+
+const getDataFromRefUrl = async () => {
+  fetch(getRef.data.object.url, { method: 'GET' }).then(response => {
+    if (!response.ok) {
+      throw new Error('Erro ao obter os dados');
+    }
+    return response.json();
+  })
+  .then(data => {
+    dataFromRef = data;
+    return data;
+  })
+  .catch(error => {
+    console.error('Houve um problema com a sua solicitação fetch:', error);
+  });
+}
+
+await getDataFromRefUrl();
+
 const getCommit = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
   owner: owner,
   repo: repo,
@@ -45,7 +65,7 @@ const createBlob = await octokit.request('POST /repos/{owner}/{repo}/git/blobs',
 const createTree = await octokit.request('POST /repos/{owner}/{repo}/git/trees', {
   owner: owner,
   repo: repo,
-  base_tree: getCommit.data.tree.sha,
+  base_tree: getCommit.data.sha,
   tree: [
     {
       path: 'tree.md',
@@ -79,22 +99,26 @@ const createCommit = await octokit.request('POST /repos/{owner}/{repo}/git/commi
   }
 })
 
-// const updateRef = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
-//   owner: owner,
-//   repo: repo,
-//   ref: 'heads/master',
-//   sha: createCommit.data.sha,
-//   force: true,
-//   headers: {
-//     'X-GitHub-Api-Version': '2022-11-28'
-//   }
-// })
+const updateRef = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
+  owner: owner,
+  repo: repo,
+  ref: 'heads/master',
+  sha: createCommit.data.sha,
+  force: true,
+  headers: {
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+})
 
 
 
 
 
 console.log(getRef);
+console.log('----------------------------------------------');
+console.log('RESULT');
+console.log(dataFromRef);
+console.log('RESULT');
 console.log('----------------------------------------------');
 console.log(getCommit);
 console.log('----------------------------------------------');
