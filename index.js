@@ -13,7 +13,7 @@ const author = {
   date: new Date().getDay,
 };
 
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < 2; i++) {
   const getRef = await octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
     owner: owner,
     repo: repo,
@@ -35,7 +35,7 @@ for(let i = 0; i < 4; i++) {
   const createBlob = await octokit.request('POST /repos/{owner}/{repo}/git/blobs', {
     owner: owner,
     repo: repo,
-    content: `Commit número ${i}`,
+    content: `Commit número ${i + 1}`,
     encoding: 'utf-8',
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'
@@ -83,5 +83,6 @@ for(let i = 0; i < 4; i++) {
       'X-GitHub-Api-Version': '2022-11-28'
     }
   })
+  console.log(`Commit nums: ${i + 1}`)
 }
 
