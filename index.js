@@ -5,11 +5,11 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_KEY,
 });
 
-const owner = "Ezequiel-Menneck";
-const repo = "commits-from-gitlab";
+const owner = process.env.EMAIL;
+const repo = process.env.REPOSITORY;
 const author = {
-  name: "Ezequiel Menneck",
-  email: "zeeeee.peeeeetryyy@gmail.com",
+  name: process.env.NAME,
+  email: process.env.EMAIL,
   date: new Date().getDay,
 };
 
